@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{current_user.username}}{% endblock %}
+
+{% block content %}
+<h1>User's Information of <u>{{current_user.name}}</u></h1>
+	<div>
+		<form method="post" action="/user_info_edit">
+			<label>Name: <b>{{current_user.name}}</b></label>
+			<input type="text" name="name" placeholder="Edit Name?"> <br>
+			<label>Username: <b>{{current_user.username}}</b></label>
+			<input type="text" name="username" placeholder="Edit Username?"><br>
+			<label>E-Mail: <b>{{current_user.email}}</p></label>
+			<input type="text" name="email" placeholder="Edit E-Mail?"><br>
+			<label>Phone: <b>{{(current_user.phone | string)[:3]+"xxxx"+ (current_user.phone | string)[8:]}}</b></label>
+			<input type="text" name="phone" placeholder="Edit Phone Number?"><br>
+			<label>I am a: <b>{{current_user.role}}</b></label><br>
+			<label>Address: <b>{{current_user.address}}</b></label>
+			<input type="text" name="address" placeholder="Edit Address?"><br>
+			<label>Signed Up at: <b>{{current_user.created_at}}</b></label><br>
+			<label>Updated On at: <b>{{current_user.updated_at}}</b></label><br>
+			<input type="submit" value="Submit Changes">
+		</form>
+	</div>
+	<br>
+	<a href="{{url_for('main.dashboard')}}">Go to Dashboard</a>
+{% endblock %}

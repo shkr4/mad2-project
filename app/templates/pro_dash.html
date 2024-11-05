@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}{{current_user.username}}{% endblock %}
+
+{% block style %}
+
+<style>
+    table, th, td {
+      border:1px solid black;
+      text-align: center;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div style="background-color: aliceblue; padding: 15px;">
+    <h1>Dashboard of <u>{{current_user.name}}</u></h1>
+</div>
+
+<div style="background-color: azure; padding: 15px;">
+    <h2>Business Name: {{professional.business_name}}</h2><h6>Rating: {{rating}}⭐️</h6>
+</div>
+
+{% if professional.orders %}
+    <h2 style="color: rosybrown; padding: 15px;">Your Orders:</h2>
+    <div style="width: 75%; max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 25px; background-color: #F3FEB8;">
+        <table style="width:80%">
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Service Name</th>
+                <th>Customer Address</th>
+                <th>Booked On</th>
+                <th>Closed On</th>
+                <th>Closed By</th>
+                <th>Status</th>
+                <th>Rating By Customer</th>
+                <th>Remark By Customer</th>
+                <th>Action</th>
+            </tr>
+            {% for order in orders %}
+        
+                <tr>
+                    <td>{{order.order_id}}</td>
+                    <td>{{order.user.name}}</td>
+                    <td>{{order.service}}</td>
+                    <td>{{order.user.address}}</td>
+                    <td>{{order.booked_at}}</td>
+                    <td>{{order.closed_at}}</td>
+                    <td>{{order.closed_by}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.rating}}</td>
+                    <td>{{order.remark_by_customer}}</td>
+                    <td>
+                        {% if order.status == "requested" %}
+                        <form method="post" action="/accept_reject_it">
+                                <input type="hidden" name="order_id" value="{{order.order_id}}">
+                                <!-- <input type="hidden" name="reject" value="reject">
+                                <input type="hidden" name="accept" value="accept"> -->
+                                <input type="submit" name="b_value" value="Accept">
+                                <input type="submit" name="b_value" value="Reject">
+                            </form>                    
+                        {% else %}
+
+                        {% endif %}
+                    </td>
+                </tr>
+        
+            {% endfor %}
+        </table>
+{% endif %}
+    </div>
+<br>
+
+<h3 style="color: rosybrown; padding: 15px;">Service that I am offering: </h3>
+<div style="width: 700px; height: 150px; overflow: auto; background-color: lightblue; padding: 10px; margin: 25px;">
+	
+	{% for k,v in professional.ServiceOffered.items()  %}
+	<form action="/pro_delete_service" method="post">
+        <input type="radio" name="service" value="{{k}}">
+        <input type="hidden" name="id" value="{{professional.id}}">
+        <label for="service">{{k}} -- Price: {{v[0]}} -- Description: {{v[1]}}</label>
+        <br> <br>
+        {% endfor %}
+       
+</div>
+<div>
+    <input type="submit" value="Delete">
+</div>
+</form>
+
+<div>
+    <form action="/pro_add_service", method="post">
+        <label for="service"><h6>Add a serivce: </h6></label>
+        <input type="text" name="service" placeholder="Service">
+        <input type="number" name="price" placeholder="Price">
+        <input type="text" name="description" placeholder="Description">
+        <input type="hidden" name="id" value="{{professional.id}}">
+        <input type="submit" value="Add">
+    </form>
+</div>
+
+<br><br>
+<h6 style="position: absolute; right: 80px; top: 570px;">Available Services:</h6>
+<div style="position: absolute; right: 10px; top: 600px; background-color: yellowgreen; height: 300px; width: 200px; overflow: auto;">
+    <div>
+
+    </div>
+    <ol>
+        {% for service in ServiceList %}
+        <li>
+            <p>{{service}}</p>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+
+    
+
+{% if current_user.role == "customer" %}
+<div style="position: absolute; right: 0; bottom: 0;">
+    <a href="{{url_for('main.reg_professional')}}">Register as Service Provider</a>
+</div>
+{% endif %}
+
+
+{% endblock %}
+

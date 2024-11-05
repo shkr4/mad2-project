@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Create New Account{% endblock %}
+
+{% block content %}
+    <h3>Welcome to <u>A to Z HouseHold Services</u></h3>
+    <h5>New Customer Registration</h5>
+    <form method="post" action="/register">
+        <label for="name">Name: </label>
+        <input type="text" name="name" required><br>
+        <label for="username">Username: </label>
+        <input type="text" name="username" required><br>
+        <label for="email">Email: </label>
+        <input type="email" name="email" required><br>
+        <label for="password">Password: </label>
+        <input type="password" name="password" required><br><br>
+        <label for="phone">Phone: </label>
+        <input type="number" name="phone" required><br>
+        <label for="address">Address: </label>
+        <textarea name="address" rows="5" cols="33" required></textarea><br>
+        <label for="pin">PIN Code: </label>
+        <input type="number" name="pin" required><br>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+  

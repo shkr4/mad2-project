@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{current_user.username}}{% endblock %}
+
+{% block content %}
+
+<h1>Dashboard of <u>{{current_user.name}}</u></h1>
+
+{{services}}
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}{{current_user.username}}{% endblock %}
+
+{% block style %}
+
+<style>
+    table, th, td {
+      border:1px solid black;
+      text-align: center;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div style="background-color: aliceblue; padding: 15px;">
+    <h1>Dashboard of <u>{{current_user.name}}</u></h1>
+</div>
+<br><br>
+
+<div style="background-color: azure; padding: 15px;">
+    <h5>What Service are you looking for? </h5>
+    <form method="post" action="/FindService">
+            <input type="text" name="req_service">
+            <input type="submit" value="Find Service">
+    </form>
+</div>
+
+<br>
+
+{% if orders %}
+<h2 style="color: rosybrown; padding: 15px;">Your Orders:</h2>
+    <div style="width: 75%; max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 25px; background-color: #F3FEB8;">
+        <table style="width:80%">
+            <tr>
+                <th>Order ID</th>
+                <th>Service Name</th>
+                <th>Professional Name</th>
+                <th>Professional Address</th>
+                <th>Date-Time</th>
+                <th>Status</th>
+                <th>Rating</th>
+                <th>Your Feedback</th>
+                <th>Action</th>
+            </tr>
+            {% for order in orders %}
+        
+                <tr>
+                    <td>{{order.order_id}}</td>
+                    <td>{{order.service}}</td>
+                    <td>{{order.professional.business_name}}</td>
+                    <td>{{order.professional.address}}<br>
+                        PIN: {{order.professional.pin}}<br>
+                        Cont: {{order.professional.user.phone}}
+                    </td>
+                    <td>{{order.booked_at}}</td>
+                    <td>{{order.status}}</td>
+                    <td>
+                        {% if order.status == "accepted" %}
+                            <form method="post" action="/close_it">
+                            <input type="hidden" name="if_close" value="{{order.order_id}}">
+                            <!-- <label for="rating"><b>Who many Stars for this service: </b></label> -->
+                            <input type="number" name="rating" placeholder="Between 1 to 5" min="1" max="5" required><br>
+                        {% else %}
+                            {{order.rating}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.status == "accepted" %}
+                            <!-- <label for="remark">Feedback: </label> -->
+                            <input type="text" name="remark">
+                        {% elif order.status == "requested" %}
+                        The Professional is processing the order
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.status == "accepted" %}
+                            <input type="submit" value="CLOSE">
+                        {% endif %}
+                    </td>
+                </tr>
+        
+            {% endfor %}
+        </table>
+    </div>
+</form>
+{% endif %}
+
+{% if current_user.role == "customer" %}
+<div style="position: absolute; right: 0; bottom: 0;">
+    <a href="{{url_for('main.reg_professional')}}">Register as Service Provider</a>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
