@@ -8,3 +8,5 @@ migrations/
 app/__pycache__/
 app/.env
 celerybeat-schedule
+app/static/uploads/
+mad2project_report.pdf
