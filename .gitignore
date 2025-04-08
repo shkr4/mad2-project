@@ -1,0 +1,10 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Virtual environment
+.venv/
+
+migrations/
+app/__pycache__/
+app/.env
+celerybeat-schedule
