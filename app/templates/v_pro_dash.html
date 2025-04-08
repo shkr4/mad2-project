@@ -1,0 +1,7 @@
+{% extends 'v_c_dash.html' %}
+{% block title %}<title>Professional Dashboard</title>{% endblock %}
+
+{% block content %}
+<professional-dashboard :current_user='{{ current_user.to_json() | tojson }}'></professional-dashboard>
+{% endblock %}
+
